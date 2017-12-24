@@ -8,6 +8,8 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+
+	. "github.com/riquellopes/tracker-api/models"
 )
 
 // ValidateHandler -
@@ -18,6 +20,12 @@ func ValidateHandler(w http.ResponseWriter, r *http.Request) {
 // CreateTracker -
 func CreateTracker(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Not implemted")
+}
+
+func init() {
+	Connection(os.Getenv("SERVER"), os.Getenv("DATABASE"))
+
+	log.Println("MongoDB connected.")
 }
 
 func main() {
