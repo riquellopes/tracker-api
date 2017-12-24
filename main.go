@@ -23,7 +23,16 @@ func CreateTracker(w http.ResponseWriter, r *http.Request) {
 }
 
 func init() {
-	Connection(os.Getenv("SERVER"), os.Getenv("DATABASE"))
+	var (
+		USERNAME = os.Getenv("USERNAME")
+		PASSWORD = os.Getenv("PASSWORD")
+		SERVER   = os.Getenv("SERVER")
+		DATABASE = os.Getenv("DATABASE")
+	)
+
+	log.Printf("MongoDB configuration: %s %s", SERVER, DATABASE)
+
+	Connection(USERNAME, PASSWORD, SERVER, DATABASE)
 
 	log.Println("MongoDB connected.")
 }

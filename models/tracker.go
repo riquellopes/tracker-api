@@ -2,6 +2,7 @@ package models
 
 import (
 	"log"
+	"time"
 
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -34,10 +35,22 @@ func (m *Tracker) Exists(id string) (bool, error) {
 }
 
 // Connection -
-func Connection(server, database string) {
-	session, err := mgo.Dial(server)
+func Connection(username, password, server, database string) {
+	info := &mgo.DialInfo{
+		Addrs:    []string{server},
+		Timeout:  60 * time.Second,
+		Database: database,
+		Username: username,
+		Password: password,
+	}
+
+	session, err := mgo.DialWithInfo(info)
 	if err != nil {
 		log.Fatal(err)
 	}
-	db = session.DB(database)
+
+	log.Print("PAssando2")
+
+	session.SetMode(mgo.Monotonic, true)
+	// db = session.DB(database)
 }
