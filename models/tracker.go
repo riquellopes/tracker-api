@@ -50,5 +50,4 @@ func Connection(username, password, server, database string) {
 	}
 
 	session.SetMode(mgo.Monotonic, true)
-	// db = session.DB(database)
 }

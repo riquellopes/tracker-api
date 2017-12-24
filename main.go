@@ -12,9 +12,23 @@ import (
 	. "github.com/riquellopes/tracker-api/models"
 )
 
+var tracker = Tracker{}
+
 // ValidateHandler -
 func ValidateHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Not implemted")
+	params := mux.Vars(r)
+	valid, err := tracker.Exists(params["id"])
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if valid {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+	w.WriteHeader(http.StatusNotFound)
 }
 
 // CreateTracker -
