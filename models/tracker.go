@@ -49,8 +49,6 @@ func Connection(username, password, server, database string) {
 		log.Fatal(err)
 	}
 
-	log.Print("PAssando2")
-
 	session.SetMode(mgo.Monotonic, true)
 	// db = session.DB(database)
 }
