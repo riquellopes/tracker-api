@@ -30,7 +30,7 @@ func init() {
 		DATABASE = os.Getenv("DATABASE")
 	)
 
-	log.Printf("MongoDB configuration: %s %s", SERVER, DATABASE)
+	log.Printf("MongoDB configuration: %s %s %s %s", USERNAME, PASSWORD, SERVER, DATABASE)
 
 	Connection(USERNAME, PASSWORD, SERVER, DATABASE)
 
