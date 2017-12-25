@@ -24,14 +24,12 @@ func (m *Tracker) Add(tracker Tracker) error {
 
 // Exists -
 func (m *Tracker) Exists(id string) (bool, error) {
-	var tracker Tracker
-	error := db.C("tracker").FindId(bson.ObjectIdHex(id)).One(&tracker)
+	count, error := db.C("tracker").Find(bson.M{"ID_": id}).Count()
 
-	if error != nil {
+	if error != nil || count > 0 {
 		return true, nil
 	}
-
-	return false, error
+	return false, nil
 }
 
 // Connection -
@@ -50,4 +48,5 @@ func Connection(username, password, server, database string) {
 	}
 
 	session.SetMode(mgo.Monotonic, true)
+	db = session.DB(database)
 }
