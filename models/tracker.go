@@ -17,14 +17,14 @@ type Tracker struct {
 }
 
 // Add -
-func (m *Tracker) Add(tracker Tracker) error {
-	err := db.C("tracker").Insert(&tracker)
+func (m *Tracker) Add() error {
+	err := db.C("tracker").Insert(&m)
 	return err
 }
 
 // Exists -
 func (m *Tracker) Exists(id string) (bool, error) {
-	count, error := db.C("tracker").Find(bson.M{"ID_": id}).Count()
+	count, error := db.C("tracker").Find(bson.M{"_id": bson.ObjectIdHex(id)}).Count()
 
 	if error != nil || count > 0 {
 		return true, nil

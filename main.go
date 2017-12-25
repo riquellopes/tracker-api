@@ -1,13 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2/bson"
 
 	. "github.com/riquellopes/tracker-api/models"
 )
@@ -33,7 +34,28 @@ func ValidateHandler(w http.ResponseWriter, r *http.Request) {
 
 // CreateTracker -
 func CreateTracker(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Not implemted")
+	defer r.Body.Close()
+	var tracker Tracker
+
+	statusCode := http.StatusOK
+	response, _ := json.Marshal(map[string]string{"result": "success"})
+
+	if err := json.NewDecoder(r.Body).Decode(&tracker); err != nil {
+		statusCode = http.StatusBadRequest
+		response, _ = json.Marshal(map[string]string{"result": "Invalid request payload"})
+
+		log.Println(err.Error())
+	}
+
+	tracker.ID = bson.NewObjectId()
+	if err := tracker.Add(); err != nil {
+		statusCode = http.StatusInternalServerError
+		response, _ = json.Marshal(map[string]string{"result": err.Error()})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
+	w.Write(response)
 }
 
 func init() {
