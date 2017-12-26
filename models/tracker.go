@@ -12,14 +12,17 @@ var db *mgo.Database
 
 // Tracker -
 type Tracker struct {
-	ID     bson.ObjectId `bson:"_id" json:"id"`
-	Name   string        `bson:"name" json:"name"`
-	Data   string        `bson:"data" json:"data"`
-	Opened bool          `bson:"opened" json:"opened"`
+	ID        bson.ObjectId `bson:"_id" json:"id"`
+	Name      string        `bson:"name" json:"name"`
+	Data      string        `bson:"data" json:"data"`
+	Opened    bool          `bson:"opened" json:"opened"`
+	CreateAt  time.Time     `bson:"create_at" json:"create_at"`
+	UpdatedAt time.Time     `bson:"update_at" json:"update_at"`
 }
 
 // Add -
 func (m *Tracker) Add() error {
+	m.CreateAt = time.Now()
 	err := db.C("tracker").Insert(&m)
 	return err
 }
