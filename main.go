@@ -15,8 +15,8 @@ import (
 
 var tracker = Tracker{}
 
-// ValidateHandler -
-func ValidateHandler(w http.ResponseWriter, r *http.Request) {
+// ValidateTrackerHandler -
+func ValidateTrackerHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	valid, err := tracker.Exists(params["id"])
 
@@ -32,8 +32,8 @@ func ValidateHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
 }
 
-// CreateTracker -
-func CreateTracker(w http.ResponseWriter, r *http.Request) {
+// CreateTrackerHandler -
+func CreateTrackerHandler(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	var tracker Tracker
 
@@ -60,6 +60,11 @@ func CreateTracker(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
+// RegisterTrackerHandler -
+func RegisterTrackerHandler(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func init() {
 	var (
 		USERNAME = os.Getenv("USERNAME")
@@ -82,8 +87,9 @@ func main() {
 	route.Handle("/", http.FileServer(http.Dir("./views/")))
 
 	// Api path
-	route.HandleFunc("/tracker/{id}", ValidateHandler).Methods("GET")
-	route.HandleFunc("/tracker", CreateTracker).Methods("POST")
+	route.HandleFunc("/tracker/{id}", ValidateTrackerHandler).Methods("GET")
+	route.HandleFunc("/tracker", CreateTrackerHandler).Methods("POST")
+	route.HandleFunc("/tracker/{id}", RegisterTrackerHandler).Methods("PUT")
 
 	if err := http.ListenAndServe(":5000", handlers.LoggingHandler(os.Stdout, route)); err != nil {
 		log.Fatal(err)
