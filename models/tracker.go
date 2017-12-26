@@ -12,8 +12,10 @@ var db *mgo.Database
 
 // Tracker -
 type Tracker struct {
-	ID   bson.ObjectId `bson:"_id" json:"id"`
-	Name string        `bson:"name" json:"name"`
+	ID     bson.ObjectId `bson:"_id" json:"id"`
+	Name   string        `bson:"name" json:"name"`
+	Data   string        `bson:"data" json:"data"`
+	Opened bool          `bson:"opened" json:"opened"`
 }
 
 // Add -

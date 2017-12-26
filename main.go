@@ -48,6 +48,8 @@ func CreateTracker(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tracker.ID = bson.NewObjectId()
+	tracker.Opened = false
+
 	if err := tracker.Add(); err != nil {
 		statusCode = http.StatusInternalServerError
 		response, _ = json.Marshal(map[string]string{"result": err.Error()})
