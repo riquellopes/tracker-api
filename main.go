@@ -58,7 +58,28 @@ func CreateTrackerHandler(w http.ResponseWriter, r *http.Request) {
 
 // RegisterTrackerHandler -
 func RegisterTrackerHandler(w http.ResponseWriter, r *http.Request) {
+	defer r.Body.Close()
+	params := mux.Vars(r)
+	var tracker Tracker
 
+	statusCode := http.StatusOK
+	response, _ := json.Marshal(map[string]string{"result": "success"})
+
+	if err := json.NewDecoder(r.Body).Decode(&tracker); err != nil {
+		statusCode = http.StatusBadRequest
+		response, _ = json.Marshal(map[string]string{"result": "Invalid request payload"})
+
+		log.Println(err.Error())
+	}
+
+	if err := tracker.Register(params["id"]); err != nil {
+		statusCode = http.StatusInternalServerError
+		response, _ = json.Marshal(map[string]string{"result": err.Error()})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
+	w.Write(response)
 }
 
 func init() {

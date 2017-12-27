@@ -40,6 +40,20 @@ func (m *Tracker) Exists(id string) (bool, error) {
 	return false, nil
 }
 
+// Register -
+func (m *Tracker) Register(id string) error {
+	m.ID = bson.ObjectIdHex(id)
+	m.UpdatedAt = time.Now()
+	m.Opened = true
+
+	selector := bson.M{"opened": false, "_id": bson.ObjectIdHex(id)}
+
+	if err := db.C("tracker").Update(selector, &m); err != nil {
+		return err
+	}
+	return nil
+}
+
 // Connection -
 func Connection(username, password, server, database string) {
 	info := &mgo.DialInfo{
