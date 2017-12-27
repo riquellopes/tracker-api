@@ -1,0 +1,12 @@
+version: "2"
+services:
+  app:
+    image:  golang:1.9.2-alpine3.6
+    volumes:
+      - .:/go/src/github.com/riquellopes/tracker-api
+    working_dir: /go/src/github.com/riquellopes/tracker-api
+    command: go run main.go
+    links:
+      - mongodb
+  mongodb:
+    image: mvertes/alpine-mongo
