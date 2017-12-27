@@ -8,7 +8,6 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"gopkg.in/mgo.v2/bson"
 
 	. "github.com/riquellopes/tracker-api/models"
 )
@@ -46,9 +45,6 @@ func CreateTrackerHandler(w http.ResponseWriter, r *http.Request) {
 
 		log.Println(err.Error())
 	}
-
-	tracker.ID = bson.NewObjectId()
-	tracker.Opened = false
 
 	if err := tracker.Add(); err != nil {
 		statusCode = http.StatusInternalServerError

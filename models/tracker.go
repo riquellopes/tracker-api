@@ -23,6 +23,9 @@ type Tracker struct {
 // Add -
 func (m *Tracker) Add() error {
 	m.CreateAt = time.Now()
+	m.ID = bson.NewObjectId()
+	m.Opened = false
+
 	err := db.C("tracker").Insert(&m)
 	return err
 }
