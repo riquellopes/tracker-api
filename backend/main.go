@@ -101,8 +101,6 @@ func main() {
 
 	route := mux.NewRouter()
 
-	route.Handle("/", http.FileServer(http.Dir("./views/")))
-
 	// Api path
 	route.HandleFunc("/tracker/{id}", ValidateTrackerHandler).Methods("GET")
 	route.HandleFunc("/tracker", CreateTrackerHandler).Methods("POST")
