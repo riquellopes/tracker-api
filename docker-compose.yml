@@ -3,7 +3,7 @@ services:
   app:
     image:  golang:1.9.2-alpine3.6
     volumes:
-      - .:/go/src/github.com/riquellopes/tracker-api
+      - ./backend:/go/src/github.com/riquellopes/tracker-api
     working_dir: /go/src/github.com/riquellopes/tracker-api
     command: go run main.go
     links:
@@ -15,5 +15,15 @@ services:
     environment:
       - DATABASE=tracker
       - SERVER=mongodb
+    depends_on:
+      - mongodb
+  frontend:
+    image: node:8-alpine
+    volumes:
+      - ./frontend:/frontend
+    depends_on:
+      - app
+    links:
+      - app
   mongodb:
     image: mvertes/alpine-mongo
