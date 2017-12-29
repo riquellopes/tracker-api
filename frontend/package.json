@@ -1,0 +1,14 @@
+{
+  "name": "tracker-views",
+  "version": "1.0.0",
+  "description": "Simple views",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Henrique Lopes",
+  "license": "ISC",
+  "devDependencies": {
+    "react-scripts": "^1.0.17"
+  }
+}
