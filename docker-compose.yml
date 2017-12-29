@@ -21,6 +21,7 @@ services:
     image: node:8-alpine
     volumes:
       - ./frontend:/frontend
+    working_dir: /frontend
     depends_on:
       - app
     links:
