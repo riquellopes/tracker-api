@@ -40,6 +40,14 @@ func (m *Tracker) Exists(id string) (bool, error) {
 	return false, nil
 }
 
+// All -
+func (m *Tracker) All() ([]Tracker, error) {
+	var tracks []Tracker
+
+	error := db.C("tracker").Find(bson.M{}).All(&tracks)
+	return tracks, error
+}
+
 // Register -
 func (m *Tracker) Register(id string) error {
 	m.ID = bson.ObjectIdHex(id)

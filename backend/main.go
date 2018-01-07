@@ -8,6 +8,7 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 
 	. "github.com/riquellopes/tracker-api/models"
 )
@@ -56,6 +57,22 @@ func CreateTrackerHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
+// GetAllTrackerHandler -
+func GetAllTrackerHandler(w http.ResponseWriter, r *http.Request) {
+	trackers, err := tracker.All()
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	response, _ := json.Marshal(trackers)
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+
+}
+
 // RegisterTrackerHandler -
 func RegisterTrackerHandler(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
@@ -102,11 +119,14 @@ func main() {
 	route := mux.NewRouter()
 
 	// Api path
-	route.HandleFunc("/tracker/{id}", ValidateTrackerHandler).Methods("GET")
+	route.HandleFunc("/tracker", GetAllTrackerHandler).Methods("GET")
 	route.HandleFunc("/tracker", CreateTrackerHandler).Methods("POST")
+	route.HandleFunc("/tracker/{id}", ValidateTrackerHandler).Methods("GET")
 	route.HandleFunc("/tracker/{id}", RegisterTrackerHandler).Methods("PUT")
 
-	if err := http.ListenAndServe(":5000", handlers.LoggingHandler(os.Stdout, route)); err != nil {
+	handler := cors.Default().Handler(route)
+
+	if err := http.ListenAndServe(":5000", handlers.LoggingHandler(os.Stdout, handler)); err != nil {
 		log.Fatal(err)
 	}
 }
