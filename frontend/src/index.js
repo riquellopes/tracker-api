@@ -8,6 +8,8 @@ import Home from './views/Home';
 import Create from './views/Create';
 
 
+import registerServiceWorker from './registerServiceWorker';
+
 ReactDOM.render((
       <Router history={browserHistory}>
           <Route path="/" component={App}>
@@ -18,3 +20,5 @@ ReactDOM.render((
   ),
   document.getElementById('root')
 );
+
+registerServiceWorker();
