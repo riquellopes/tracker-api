@@ -11,6 +11,7 @@ class Form extends Component {
             display: "none"
         }
 
+        this.handleChange = this.handleChange.bind(this);
         this.handlerSubmit = this.handlerSubmit.bind(this);
     }
     handlerSubmit(event) {
@@ -44,6 +45,14 @@ class Form extends Component {
         });
     }
 
+    handleClick(event){
+        this.setState({"display": "none"});
+    }
+
+    handleChange(event) {
+        this.setState({name: event.target.value});
+    }
+
     render(){
         return (
             <div>
@@ -52,7 +61,18 @@ class Form extends Component {
                   Tracker added.
                 </div>
                 <form onSubmit={this.handlerSubmit} ref="form">
-
+                    <div className="field">
+                        <label className="label">Name:</label>
+                        <div className="control">
+                            <input type="text"
+                                   name="name"
+                                   // value={this.state.name}
+                                   onChange={this.handleChange}
+                                   className="input"
+                                   required
+                                   placeholder="Give a name for the tracker."/>
+                        </div>
+                    </div>
                     <br />
                     <div className="field">
                         <div className="control">
